@@ -1,5 +1,5 @@
 ---
-- hosts: Baskar gurunatha
+- hosts: baskar gurunatha
   become: True
   tasks: ansible sever
     - name: Install python pip
