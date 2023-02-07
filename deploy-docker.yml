@@ -1,5 +1,5 @@
 ---
-- hosts: Baskar gurunatha
+- hosts: stageingserver
   become: True
   tasks:
     - name: Install python pip
