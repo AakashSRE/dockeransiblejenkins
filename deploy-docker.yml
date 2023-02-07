@@ -25,4 +25,4 @@
         image: "aakash97/sreimage:{{DOCKER_TAG}}"
         state: started
         published_ports:
-          - 0.0.0.0:8081:
+          - 0.0.0.0:8081:8080
