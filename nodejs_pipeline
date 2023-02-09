@@ -1,8 +1,5 @@
 pipeline{
        agent any
-       tools {
-  maven 'maven3.8.7'
-}
 environment {
   DOCKER_TAG = getversion()
 }
@@ -11,17 +8,12 @@ environment {
                stage (‘SCM’) {
                       steps{
                               git credentialsId: 'github', 
-                                             url: 'https://github.com/AakashSRE/dockeransiblejenkins.git'
+                                             url: 'https://github.com/AakashSRE/sample-node-project.git'
                       }
                       
 
                 }
-       stage ('Maven Build') {
-                      steps{
-                              sh "mvn clean package"
-                      }
-
-                }
+      
                 stage('Docker Build'){
                       steps{
                               sh "docker build . -t aakash97/sreimage:${DOCKER_TAG}"
