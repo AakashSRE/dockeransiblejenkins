@@ -1,8 +1,5 @@
 pipeline{
        agent any
-environment {
-  DOCKER_TAG = getversion()
-}
 
        stages{
                stage ('SCM') {
@@ -13,10 +10,17 @@ environment {
                       
 
                 }
+                stage ('Get Version'){
+                    steps{
+                        script {
+                            DOCKER_TAG = getversion()
+                        }
+                    }
+                }
       
                 stage('Docker Build'){
                       steps{
-                              sh "docker build . -t aakash97/sreimage:${DOCKER_TAG}"
+                              sh "docker build . -t aakash97/nodeimage:${DOCKER_TAG}"
                       }
 
                 }
@@ -25,14 +29,14 @@ environment {
 					   
                           withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]){
                             sh "docker login -u aakash97 -p ${dockerHubPwd}"
-                                             sh "docker push aakash97/sreimage:${DOCKER_TAG}"
+                                             sh "docker push aakash97/nodeimage:${DOCKER_TAG}"
 						}
 		}
       
 	  }	
         	    stage('Docker Deploy'){
                       steps{
-                        ansiblePlaybook credentialsId: 'ec2-user', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'sre.inv', playbook: 'deploy-docker.yml'
+                        ansiblePlaybook credentialsId: 'ec2-user', disableHostKeyChecking: true, extras: "-e DOCKER_TAG=${DOCKER_TAG}", installation: 'ansible', inventory: 'sre.inv', playbook: 'node_deploy.yml'
                              }
                                                           
                      }
